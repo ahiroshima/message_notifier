@@ -30,7 +30,7 @@ def on_connect(client, userdata, flags, respons_code):
 
 def on_message(client, userdata, message):
     try:
-        print('on_message from Beebotte -> ' + message.topic + ' ' + str(message.payload).decode("utf-8"))
+        print('on_message from Beebotte -> ' + message.topic + ' ' + str(message.payload.decode("utf-8")))
         data = json.loads(message.payload.decode("utf-8"))["data"]
         _message = data
         notify(_message)
