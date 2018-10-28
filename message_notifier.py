@@ -5,24 +5,26 @@ from dotenv import load_dotenv
 import paho.mqtt.client as mqtt
 
 def main():
-    env_path = os.path.join(os.path.dirname(__file__), '.env')
-    load_dotenv(env_path)
+    try:
+        env_path = os.path.join(os.path.dirname(__file__), '.env')
+        load_dotenv(env_path)
 
-    BBT_HOST = os.environ.get("BBT_HOST")
-    BBT_PORT = os.environ.get("BBT_PORT")
-    BBT_TOKEN = os.environ.get("BBT_TOKEN")
-    BBT_TOPIC = os.environ.get("BBT_TOPIC")
-    BBT_CA_CERTS = os.environ.get("BBT_CA_CERTS")
+        BBT_HOST = os.environ.get("BBT_HOST")
+        BBT_PORT = os.environ.get("BBT_PORT")
+        BBT_TOKEN = os.environ.get("BBT_TOKEN")
+        BBT_TOPIC = os.environ.get("BBT_TOPIC")
+        BBT_CA_CERTS = os.environ.get("BBT_CA_CERTS")
 
-    client = mqtt.Client()
-    client.on_connect = on_connect
-    client.on_message = on_message
-    client.username_pw_set('token:%s' % BBT_TOKEN)
-    client.tls_set(BBT_CA_CERTS)
-    client.connect(BBT_HOST, port=int(BBT_PORT), keepalive=60)
-    client.subscribe(BBT_TOPIC)
-    client.loop_forever()
-
+        client = mqtt.Client()
+        client.on_connect = on_connect
+        client.on_message = on_message
+        client.username_pw_set('token:%s' % BBT_TOKEN)
+        client.tls_set(BBT_CA_CERTS)
+        client.connect(BBT_HOST, port=int(BBT_PORT), keepalive=60)
+        client.subscribe(BBT_TOPIC)
+        client.loop_forever()
+    except Exception as e:
+        print(e)
 
 def on_connect(client, userdata, flags, respons_code):
     print('Connect to Beebotte: status {0}'.format(respons_code))
